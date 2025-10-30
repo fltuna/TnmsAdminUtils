@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="ModSharp.Sharp.Shared" Version="2.0.44" ExcludeAssets="runtime"/>
+      <PackageReference Include="TnmsPluginFoundation" Version="0.0.1" ExcludeAssets="runtime"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Modules\ServerManagement\" />
+      <Folder Include="Modules\UiInteractions\" />
+      <Folder Include="Modules\UserManagement\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove=".gitignore" />
+    </ItemGroup>
+
+</Project>
