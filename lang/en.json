@@ -1,0 +1,7 @@
+{
+    "Plugin.Prefix": "{gold}[TNAU]{white}",
+    "TerminateRound.Broadcast.RoundTerminated": "terminated round in {lime}{0}{white} seconds with reason {lime}{1}{white}",
+    "Slay.Broadcast.Slayed": "slayed {lime}{0}{white}",
+    "Slap.Broadcast.Slapped.WithDamage": "slapped {lime}{0}{white} with {lime}{1}{white} damage",
+    "Slap.Broadcast.Slapped.NoDamage": "slapped {lime}{0}{white}"
+}

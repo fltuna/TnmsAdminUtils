@@ -83,11 +83,11 @@ public class Slap(IServiceProvider provider): TnmsAbstractCommandBase(provider)
 
         if (damage > 0)
         {
-            Plugin.LogAdminAction(client, $"Slapped {targetName} with {damage} damage.");
+            Plugin.LogAdminActionLocalized(client, "Slap.Broadcast.Slapped.WithDamage", targetName, damage);
         }
         else
         {
-            Plugin.LogAdminAction(client, $"Slapped {targetName}.");
+            Plugin.LogAdminActionLocalized(client, "Slap.Broadcast.Slapped.NoDamage", targetName);
         }
         
     }

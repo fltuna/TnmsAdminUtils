@@ -55,6 +55,6 @@ public class Slay(IServiceProvider provider): TnmsAbstractCommandBase(provider)
             targetName = $"{targets[0].Name}";
         }
         
-        Plugin.LogAdminAction(client, $"Slayed {targetName}.");
+        Plugin.LogAdminActionLocalized(client, $"Slay.Broadcast.Slayed", targetName);
     }
 }

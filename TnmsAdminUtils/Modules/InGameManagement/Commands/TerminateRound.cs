@@ -37,10 +37,8 @@ public class TerminateRound(IServiceProvider provider) : TnmsAbstractCommandBase
                 // Ignored
             }
         }
-
-
-
+        
         GameRulesUtil.TerminateRound(delaySeconds, reason, true);
-        Plugin.LogAdminAction(client, $"Terminated round in {delaySeconds} seconds with reason {reason.ToString()}");
+        Plugin.LogAdminActionLocalized(client, "TerminateRound.Broadcast.RoundTerminated", delaySeconds, reason.ToString());
     }
 }
