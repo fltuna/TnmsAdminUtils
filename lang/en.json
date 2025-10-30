@@ -1,6 +1,7 @@
 {
     "Plugin.Prefix": "{gold}[TNAU]{white}",
     "Common.ValidationFailure.NoValidTargetsFound": "No valid targets found.",
+    "Common.ValidationFailure.MultipleTargetsFound": "Multiple targets found.",
     "Common.ValidationFailure.NotEnoughPermissions": "You do not have enough permissions to use this command.",
     "Common.ValidationFailure.ArgumentIsMustBeInRange": "Argument position {lime}{0}{white} must be in valid range: {lime}{1}{white}.",
     "TerminateRound.Broadcast.RoundTerminated": "terminated round in {lime}{0}{white} seconds with reason {lime}{1}{white}",
@@ -15,5 +16,11 @@
     "Cvar.Notification.Usage": "Usage: !cvar <cvar> <value>",
     "Cvar.Notification.CvarNotFound": "Specified cvar {lime}{0}{white} was not found.",
     "Cvar.Notification.CurrentCvarValueAndType": "Cvar: {lime}{0}{white} | current value: {lime}{2}{white} | Type: {lime}{1}{white}",
-    "Cvar.Broadcast.CvarSet": "changed cvar {lime}{0}{white} value to {lime}{1}{white}"
+    "Cvar.Broadcast.CvarSet": "changed cvar {lime}{0}{white} value to {lime}{1}{white}",
+    "Teleport.Notification.Bring.Usage": "Usage: !bring <player>",
+    "Teleport.Broadcast.Bring": "brought {lime}{0}{white} to their position",
+    "Teleport.Notification.Send.Usage": "Usage: !send <target> <to>",
+    "Teleport.Broadcast.Send": "sent {lime}{0}{white} to {lime}{1}{white}",
+    "Teleport.Notification.Goto.Usage": "Usage: !goto <player>",
+    "Teleport.Broadcast.Goto": "teleported to {lime}{0}{white}"
 }

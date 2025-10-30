@@ -1,4 +1,5 @@
 ﻿using TnmsAdminUtils.Modules.InGameManagement.Commands;
+using TnmsAdminUtils.Modules.InGameManagement.Commands.Teleports;
 using TnmsPluginFoundation.Models.Plugin;
 
 namespace TnmsAdminUtils.Modules.InGameManagement;
@@ -14,5 +15,9 @@ public class InGameManagementCommands(IServiceProvider serviceProvider) : Plugin
         RegisterTnmsCommand<TerminateRound>();
         RegisterTnmsCommand<Slap>();
         RegisterTnmsCommand<Slay>();
+        
+        RegisterTnmsCommand<Goto>();
+        RegisterTnmsCommand<Bring>();
+        RegisterTnmsCommand<Send>();
     }
 }
