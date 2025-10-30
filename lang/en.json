@@ -8,5 +8,8 @@
     "Slay.Broadcast.Slayed": "slayed {lime}{0}{white}",
     "Slap.Notification.Usage": "Usage: !slap <player> [damage]",
     "Slap.Broadcast.Slapped.WithDamage": "slapped {lime}{0}{white} with {lime}{1}{white} damage",
-    "Slap.Broadcast.Slapped.NoDamage": "slapped {lime}{0}{white}"
+    "Slap.Broadcast.Slapped.NoDamage": "slapped {lime}{0}{white}",
+    "Rcon.Notification.Usage": "Usage: !rcon <command>",
+    "Rcon.Notification.CommandExecuted": "Command executed: {lime}{0}{white}",
+    "Rcon.Notification.CapturedSTDOUT": "Captured STDOUT: {grey}{0}{white}"
 }

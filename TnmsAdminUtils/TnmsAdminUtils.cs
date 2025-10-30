@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Sharp.Shared;
 using TnmsAdminUtils.Modules.InGameManagement;
+using TnmsAdminUtils.Modules.ServerManagement;
 using TnmsPluginFoundation;
 
 namespace TnmsAdminUtils;
@@ -24,5 +25,6 @@ public class TnmsAdminUtils(
     protected override void TnmsOnPluginLoad(bool hotReload)
     {
         RegisterModule<InGameManagementCommands>();
+        RegisterModule<ServerManagementCommands>();
     }
 }

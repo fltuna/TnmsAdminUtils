@@ -19,7 +19,7 @@ public class TerminateRound(IServiceProvider provider) : TnmsAbstractCommandBase
         TnmsCommandRegistrationType.Client | TnmsCommandRegistrationType.Server;
 
     protected override ICommandValidator? GetValidator() => new CompositeValidator()
-        .Add(new PermissionValidator("tnms.adminutil.command.terminateround", true))
+        .Add(new PermissionValidator("tnms.adminutil.management.ingame.command.terminateround", true))
         .Add(new RangedArgumentValidator<float>(0.0f, 30.0f, 1, 0.0f, true));
 
     protected override ValidationFailureResult OnValidationFailed(ValidationFailureContext context)

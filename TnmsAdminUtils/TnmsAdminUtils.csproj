@@ -12,7 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Modules\ServerManagement\" />
       <Folder Include="Modules\UiInteractions\" />
       <Folder Include="Modules\UserManagement\" />
     </ItemGroup>

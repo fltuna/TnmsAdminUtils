@@ -16,7 +16,7 @@ public class Slay(IServiceProvider provider): TnmsAbstractCommandBase(provider)
         TnmsCommandRegistrationType.Client | TnmsCommandRegistrationType.Server;
 
     protected override ICommandValidator? GetValidator() => new CompositeValidator()
-        .Add(new PermissionValidator("tnms.adminutil.command.slay", true))
+        .Add(new PermissionValidator("tnms.adminutil.management.ingame.command.slay", true))
         .Add(new ArgumentCountValidator(1, true))
         .Add(new ExtendableTargetValidator(1, true));
 
