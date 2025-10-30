@@ -10,9 +10,9 @@ namespace TnmsAdminUtils.Utils;
 public static class AdminActionUtil
 {
     public static void LogAdminActionLocalized(this TnmsPlugin plugin, IGameClient? executor,
-        string actionDescription, params object[] descriptionParams)
+        string descriptionTranslationKey, params object[] descriptionParams)
     {
-        string localizedActionDescription = plugin.LocalizeString(actionDescription, descriptionParams);
+        string localizedActionDescription = plugin.LocalizeString(descriptionTranslationKey, descriptionParams);
         string log = $"[AdminAction] {PlayerUtil.GetPlayerName(executor)} ({executor?.SteamId.ToString() ?? "N/A"}) performed action: {localizedActionDescription}";
         
         plugin.Logger.LogInformation(log);
@@ -24,7 +24,7 @@ public static class AdminActionUtil
             // TODO: add permission check for manipulating details shown in admin action log
             
             var msg =
-                $"{plugin.LocalizeStringForPlayer(gameClient, plugin.PluginPrefix)} {PlayerUtil.GetPlayerName(executor)}: {plugin.LocalizeStringForPlayer(gameClient, actionDescription, descriptionParams)}";
+                $"{plugin.LocalizeStringForPlayer(gameClient, plugin.PluginPrefix)} {PlayerUtil.GetPlayerName(executor)}: {plugin.LocalizeStringForPlayer(gameClient, descriptionTranslationKey, descriptionParams)}";
             
             gameClient.GetPlayerController()?.PrintToChat(msg);
         }

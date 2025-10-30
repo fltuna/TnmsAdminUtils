@@ -13,5 +13,6 @@ public class ServerManagementCommands(IServiceProvider serviceProvider) : Plugin
     protected override void OnAllModulesLoaded()
     {
         RegisterTnmsCommand<Rcon>();
+        RegisterTnmsCommand<Cvar>();
     }
 }

@@ -11,5 +11,9 @@
     "Slap.Broadcast.Slapped.NoDamage": "slapped {lime}{0}{white}",
     "Rcon.Notification.Usage": "Usage: !rcon <command>",
     "Rcon.Notification.CommandExecuted": "Command executed: {lime}{0}{white}",
-    "Rcon.Notification.CapturedSTDOUT": "Captured STDOUT: {grey}{0}{white}"
+    "Rcon.Notification.CapturedSTDOUT": "Captured STDOUT: {grey}{0}{white}",
+    "Cvar.Notification.Usage": "Usage: !cvar <cvar> <value>",
+    "Cvar.Notification.CvarNotFound": "Specified cvar {lime}{0}{white} was not found.",
+    "Cvar.Notification.CurrentCvarValueAndType": "Cvar: {lime}{0}{white} | current value: {lime}{2}{white} | Type: {lime}{1}{white}",
+    "Cvar.Broadcast.CvarSet": "changed cvar {lime}{0}{white} value to {lime}{1}{white}"
 }
