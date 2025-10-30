@@ -12,5 +12,7 @@ public class InGameManagementCommands(IServiceProvider serviceProvider) : Plugin
     protected override void OnAllModulesLoaded()
     {
         RegisterTnmsCommand<TerminateRound>();
+        RegisterTnmsCommand<Slap>();
+        RegisterTnmsCommand<Slay>();
     }
 }
