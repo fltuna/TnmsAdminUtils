@@ -1,7 +1,12 @@
 {
     "Plugin.Prefix": "{gold}[TNAU]{white}",
+    "Common.ValidationFailure.NoValidTargetsFound": "No valid targets found.",
+    "Common.ValidationFailure.NotEnoughPermissions": "You do not have enough permissions to use this command.",
+    "Common.ValidationFailure.ArgumentIsMustBeInRange": "Argument position {lime}{0}{white} must be in valid range: {lime}{1}{white}.",
     "TerminateRound.Broadcast.RoundTerminated": "terminated round in {lime}{0}{white} seconds with reason {lime}{1}{white}",
+    "Slay.Notification.Usage": "Usage: !slay <player>",
     "Slay.Broadcast.Slayed": "slayed {lime}{0}{white}",
+    "Slap.Notification.Usage": "Usage: !slap <player> [damage]",
     "Slap.Broadcast.Slapped.WithDamage": "slapped {lime}{0}{white} with {lime}{1}{white} damage",
     "Slap.Broadcast.Slapped.NoDamage": "slapped {lime}{0}{white}"
 }

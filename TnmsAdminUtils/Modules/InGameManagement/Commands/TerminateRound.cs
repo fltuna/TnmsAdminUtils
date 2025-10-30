@@ -22,6 +22,21 @@ public class TerminateRound(IServiceProvider provider) : TnmsAbstractCommandBase
         .Add(new PermissionValidator("tnms.adminutil.command.terminateround", true))
         .Add(new RangedArgumentValidator<float>(0.0f, 30.0f, 1, 0.0f, true));
 
+    protected override ValidationFailureResult OnValidationFailed(ValidationFailureContext context)
+    {
+        switch (context.Validator)
+        {
+            case PermissionValidator:
+                PrintMessageToServerOrPlayerChat(context.Client, LocalizeWithPluginPrefix(context.Client, "Common.ValidationFailure.NotEnoughPermissions"));
+                break;
+            case RangedArgumentValidator<float>:
+                PrintMessageToServerOrPlayerChat(context.Client, LocalizeWithPluginPrefix(context.Client, "Common.ValidationFailure.ArgumentIsMustBeInRange", 1, context.RangedValidator!.GetRangeDescription()));
+                break;
+        }
+        
+        return ValidationFailureResult.SilentAbort();
+    }
+
     protected override void ExecuteCommand(IGameClient? client, StringCommand commandInfo, ValidatedArguments? validatedArguments)
     {
         RoundEndReason reason = RoundEndReason.RoundDraw;

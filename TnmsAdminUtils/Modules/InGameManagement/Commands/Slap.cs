@@ -18,6 +18,7 @@ public class Slap(IServiceProvider provider): TnmsAbstractCommandBase(provider)
 
     protected override ICommandValidator? GetValidator() => new CompositeValidator()
         .Add(new PermissionValidator("tnms.adminutil.command.slay", true))
+        .Add(new ArgumentCountValidator(1, true))
         .Add(new ExtendableTargetValidator(1, true))
         .Add(new RangedArgumentValidator<int>(0, int.MaxValue, 2, 0, true));
 
@@ -25,11 +26,17 @@ public class Slap(IServiceProvider provider): TnmsAbstractCommandBase(provider)
     {
         switch (context.Validator)
         {
-            case PermissionValidator permissionValidator:
-                PrintMessageToServerOrPlayerChat(context.Client, "You do not have permission to use this command.");
+            case ArgumentCountValidator:
+                PrintMessageToServerOrPlayerChat(context.Client, LocalizeWithPluginPrefix(context.Client, "Slay.Notification.Usage"));
                 break;
-            case ExtendableTargetValidator extendableTargetValidator:
-                PrintMessageToServerOrPlayerChat(context.Client, "No valid target found to slap.");
+            case PermissionValidator:
+                PrintMessageToServerOrPlayerChat(context.Client, LocalizeWithPluginPrefix(context.Client, "Common.ValidationFailure.NotEnoughPermissions"));
+                break;
+            case ExtendableTargetValidator:
+                PrintMessageToServerOrPlayerChat(context.Client, LocalizeWithPluginPrefix(context.Client, "Common.ValidationFailure.NoValidTargetsFound"));
+                break;
+            case RangedArgumentValidator<int>:
+                PrintMessageToServerOrPlayerChat(context.Client, LocalizeWithPluginPrefix(context.Client, "Common.ValidationFailure.ArgumentIsMustBeInRange", 2, context.RangedValidator!.GetRangeDescription()));
                 break;
         }
         

@@ -17,17 +17,21 @@ public class Slay(IServiceProvider provider): TnmsAbstractCommandBase(provider)
 
     protected override ICommandValidator? GetValidator() => new CompositeValidator()
         .Add(new PermissionValidator("tnms.adminutil.command.slay", true))
+        .Add(new ArgumentCountValidator(1, true))
         .Add(new ExtendableTargetValidator(1, true));
 
     protected override ValidationFailureResult OnValidationFailed(ValidationFailureContext context)
     {
         switch (context.Validator)
         {
-            case PermissionValidator permissionValidator:
-                PrintMessageToServerOrPlayerChat(context.Client, "You do not have permission to use this command.");
+            case ArgumentCountValidator:
+                PrintMessageToServerOrPlayerChat(context.Client, LocalizeWithPluginPrefix(context.Client, "Slap.Notification.Usage"));
                 break;
-            case ExtendableTargetValidator extendableTargetValidator:
-                PrintMessageToServerOrPlayerChat(context.Client, "No valid target found to slay.");
+            case PermissionValidator:
+                PrintMessageToServerOrPlayerChat(context.Client, LocalizeWithPluginPrefix(context.Client, "Common.ValidationFailure.NotEnoughPermissions"));
+                break;
+            case ExtendableTargetValidator:
+                PrintMessageToServerOrPlayerChat(context.Client, LocalizeWithPluginPrefix(context.Client, "Common.ValidationFailure.NoValidTargetsFound"));
                 break;
         }
         
