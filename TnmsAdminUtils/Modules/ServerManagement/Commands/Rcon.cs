@@ -39,17 +39,13 @@ public class Rcon(IServiceProvider provider): TnmsAbstractCommandBase(provider)
         
         string commandToExecute = commandInfo.ArgString;
         
-        var capture = new ConsoleCapture();
-        
         Plugin.SharedSystem.GetModSharp().ServerCommand(commandToExecute);
         
-        string capturedText = capture.GetCapturedText();
-        capture.Restore();
+        // client.GetPlayerController()?.PrintToChat(LocalizeWithPluginPrefix(client, "Rcon.Notification.CommandExecuted", commandToExecute));
+    
+        Plugin.LogAdminActionLocalized(client, "Rcon.Broadcast.CommandExecuted", commandToExecute);
+
         
-        client.GetPlayerController()?.PrintToChat(LocalizeWithPluginPrefix(client, "Rcon.Notification.CommandExecuted", commandToExecute));
-        if (!string.IsNullOrEmpty(capturedText))
-        {
-            client.GetPlayerController()?.PrintToChat(LocalizeWithPluginPrefix(client, "Rcon.Notification.CapturedSTDOUT", capturedText));
-        }
+        
     }
 }
