@@ -13,7 +13,6 @@
 
     <ItemGroup>
       <Folder Include="Modules\UiInteractions\" />
-      <Folder Include="Modules\UserManagement\" />
     </ItemGroup>
 
     <ItemGroup>
