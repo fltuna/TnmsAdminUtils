@@ -21,5 +21,8 @@
     "Teleport.Notification.Send.Usage": "Usage: !send <target> <to>",
     "Teleport.Broadcast.Send": "sent {lime}{0}{white} to {lime}{1}{white}",
     "Teleport.Notification.Goto.Usage": "Usage: !goto <player>",
-    "Teleport.Broadcast.Goto": "teleported to {lime}{0}{white}"
+    "Teleport.Broadcast.Goto": "teleported to {lime}{0}{white}",
+    "AddTime.Notification.Usage": "Usage: !addtime <seconds>",
+    "AddTime.Broadcast.TimeAdded": "added {lime}{0}{white} seconds to the current round",
+    "AddTime.Broadcast.TimeShortened": "shortened the current round by {lime}{0}{white} seconds"
 }

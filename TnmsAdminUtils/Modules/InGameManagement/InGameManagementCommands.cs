@@ -1,4 +1,5 @@
 ﻿using TnmsAdminUtils.Modules.InGameManagement.Commands;
+using TnmsAdminUtils.Modules.InGameManagement.Commands.GameRules;
 using TnmsAdminUtils.Modules.InGameManagement.Commands.Teleports;
 using TnmsPluginFoundation.Models.Plugin;
 
@@ -19,5 +20,6 @@ public class InGameManagementCommands(IServiceProvider serviceProvider) : Plugin
         RegisterTnmsCommand<Goto>();
         RegisterTnmsCommand<Bring>();
         RegisterTnmsCommand<Send>();
+        RegisterTnmsCommand<AddTime>();
     }
 }
