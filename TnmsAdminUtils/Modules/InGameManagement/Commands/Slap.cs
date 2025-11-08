@@ -1,6 +1,5 @@
 ﻿using Sharp.Shared.Objects;
 using Sharp.Shared.Types;
-using TnmsAdminUtils.Utils;
 using TnmsPluginFoundation.Extensions.Client;
 using TnmsPluginFoundation.Models.Command;
 using TnmsPluginFoundation.Models.Command.Validators;
@@ -90,11 +89,11 @@ public class Slap(IServiceProvider provider): TnmsAbstractCommandBase(provider)
 
         if (damage > 0)
         {
-            Plugin.LogAdminActionLocalized(client, "Slap.Broadcast.Slapped.WithDamage", targetName, damage);
+            Plugin.TnmsLogger.LogAdminActionLocalized(client, "Slap.Broadcast.Slapped.WithDamage", targetName, damage);
         }
         else
         {
-            Plugin.LogAdminActionLocalized(client, "Slap.Broadcast.Slapped.NoDamage", targetName);
+            Plugin.TnmsLogger.LogAdminActionLocalized(client, "Slap.Broadcast.Slapped.NoDamage", targetName);
         }
         
     }

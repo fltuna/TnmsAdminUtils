@@ -1,7 +1,6 @@
 ﻿using Sharp.Shared.Enums;
 using Sharp.Shared.Objects;
 using Sharp.Shared.Types;
-using TnmsAdminUtils.Utils;
 using TnmsPluginFoundation.Models.Command;
 using TnmsPluginFoundation.Models.Command.Validators;
 using TnmsPluginFoundation.Models.Command.Validators.RangedValidators;
@@ -54,6 +53,6 @@ public class TerminateRound(IServiceProvider provider) : TnmsAbstractCommandBase
         }
         
         GameRulesUtil.TerminateRound(delaySeconds, reason, true);
-        Plugin.LogAdminActionLocalized(client, "TerminateRound.Broadcast.RoundTerminated", delaySeconds, reason.ToString());
+        Plugin.TnmsLogger.LogAdminActionLocalized(client, "TerminateRound.Broadcast.RoundTerminated", delaySeconds, reason.ToString());
     }
 }

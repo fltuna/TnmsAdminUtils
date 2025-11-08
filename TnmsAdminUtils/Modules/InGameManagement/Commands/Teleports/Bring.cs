@@ -1,6 +1,5 @@
 ﻿using Sharp.Shared.Objects;
 using Sharp.Shared.Types;
-using TnmsAdminUtils.Utils;
 using TnmsPluginFoundation.Extensions.Client;
 using TnmsPluginFoundation.Models.Command;
 using TnmsPluginFoundation.Models.Command.Validators;
@@ -66,6 +65,6 @@ public class Bring(IServiceProvider provider): TnmsAbstractCommandBase(provider)
             targetName = $"{targets[0].Name}";
         }
         
-        Plugin.LogAdminActionLocalized(client, "Teleport.Broadcast.Bring", targetName);
+        Plugin.TnmsLogger.LogAdminActionLocalized(client, "Teleport.Broadcast.Bring", targetName);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Sharp.Shared.Enums;
 using Sharp.Shared.Objects;
 using Sharp.Shared.Types;
-using TnmsAdminUtils.Utils;
+using TnmsPluginFoundation.Extensions;
 using TnmsPluginFoundation.Models.Command;
 using TnmsPluginFoundation.Models.Command.Validators;
 
@@ -61,7 +61,7 @@ public class Cvar(IServiceProvider provider): TnmsAbstractCommandBase(provider)
         }
         
         
-        Plugin.LogAdminActionLocalized(client, "Cvar.Broadcast.CvarSet", cvar.Name, value);
+        Plugin.TnmsLogger.LogAdminActionLocalized(client, "Cvar.Broadcast.CvarSet", cvar.Name, value);
     }
 
 }

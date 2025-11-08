@@ -1,6 +1,5 @@
 ﻿using Sharp.Shared.Objects;
 using Sharp.Shared.Types;
-using TnmsAdminUtils.Utils;
 using TnmsPluginFoundation.Extensions.Client;
 using TnmsPluginFoundation.Models.Command;
 using TnmsPluginFoundation.Models.Command.Validators;
@@ -62,6 +61,6 @@ public class Goto(IServiceProvider provider): TnmsAbstractCommandBase(provider)
         
         executorPawn.Teleport(targetPawn.GetAbsOrigin());
         
-        Plugin.LogAdminActionLocalized(client, "Teleport.Broadcast.Goto", targetPawn.GetController()!.PlayerName);
+        Plugin.TnmsLogger.LogAdminActionLocalized(client, "Teleport.Broadcast.Goto", targetPawn.GetController()!.PlayerName);
     }
 }

@@ -1,7 +1,5 @@
-﻿using Sharp.Shared.Enums;
-using Sharp.Shared.Objects;
+﻿using Sharp.Shared.Objects;
 using Sharp.Shared.Types;
-using TnmsAdminUtils.Utils;
 using TnmsPluginFoundation.Models.Command;
 using TnmsPluginFoundation.Models.Command.Validators;
 using TnmsPluginFoundation.Models.Command.Validators.RangedValidators;
@@ -58,11 +56,11 @@ public class AddTime(IServiceProvider provider) : TnmsAbstractCommandBase(provid
                 newRoundTimeLimit = 0;
             }
             
-            Plugin.LogAdminActionLocalized(client, "AddTime.Broadcast.TimeShortened", diffTime);
+            Plugin.TnmsLogger.LogAdminActionLocalized(client, "AddTime.Broadcast.TimeShortened", diffTime);
         }
         else
         {
-            Plugin.LogAdminActionLocalized(client, "AddTime.Broadcast.TimeAdded", extendSeconds);
+            Plugin.TnmsLogger.LogAdminActionLocalized(client, "AddTime.Broadcast.TimeAdded", extendSeconds);
         }
         
         GameRulesUtil.SetRoundTime(newRoundTimeLimit);

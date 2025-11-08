@@ -1,10 +1,7 @@
 ﻿using Sharp.Shared.Objects;
 using Sharp.Shared.Types;
-using TnmsAdminUtils.Utils;
-using TnmsPluginFoundation.Extensions.Client;
 using TnmsPluginFoundation.Models.Command;
 using TnmsPluginFoundation.Models.Command.Validators;
-using TnmsPluginFoundation.Models.Command.Validators.RangedValidators;
 
 namespace TnmsAdminUtils.Modules.ServerManagement.Commands;
 
@@ -43,7 +40,7 @@ public class Rcon(IServiceProvider provider): TnmsAbstractCommandBase(provider)
         
         // client.GetPlayerController()?.PrintToChat(LocalizeWithPluginPrefix(client, "Rcon.Notification.CommandExecuted", commandToExecute));
     
-        Plugin.LogAdminActionLocalized(client, "Rcon.Broadcast.CommandExecuted", commandToExecute);
+        Plugin.TnmsLogger.LogAdminActionLocalized(client, "Rcon.Broadcast.CommandExecuted", commandToExecute);
 
         
         

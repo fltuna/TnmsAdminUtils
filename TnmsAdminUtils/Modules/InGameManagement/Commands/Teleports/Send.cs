@@ -1,6 +1,5 @@
 ﻿using Sharp.Shared.Objects;
 using Sharp.Shared.Types;
-using TnmsAdminUtils.Utils;
 using TnmsPluginFoundation.Extensions.Client;
 using TnmsPluginFoundation.Models.Command;
 using TnmsPluginFoundation.Models.Command.Validators;
@@ -79,6 +78,6 @@ public class Send(IServiceProvider provider): TnmsAbstractCommandBase(provider)
             targetName = $"{targets[0].Name}";
         }
         
-        Plugin.LogAdminActionLocalized(client, "Teleport.Broadcast.Send", targetName, PlayerUtil.GetPlayerName(sendTargetPawn.GetController()?.GetGameClient()));
+        Plugin.TnmsLogger.LogAdminActionLocalized(client, "Teleport.Broadcast.Send", targetName, PlayerUtil.GetPlayerName(sendTargetPawn.GetController()?.GetGameClient()));
     }
 }

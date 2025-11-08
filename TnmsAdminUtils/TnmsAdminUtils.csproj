@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="ModSharp.Sharp.Shared" Version="2.0.44" ExcludeAssets="runtime"/>
-      <PackageReference Include="TnmsPluginFoundation" Version="0.0.1" ExcludeAssets="runtime"/>
+      <PackageReference Include="ModSharp.Sharp.Shared" Version="2.0.44" ExcludeAssets="runtime" />
+      <PackageReference Include="TnmsPluginFoundation" Version="0.0.2" ExcludeAssets="runtime" />
     </ItemGroup>
 
     <ItemGroup>
