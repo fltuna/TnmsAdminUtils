@@ -26,5 +26,7 @@
     "AddTime.Notification.Usage": "Usage: !addtime <seconds>",
     "AddTime.Broadcast.TimeAdded": "added {lime}{0}{white} seconds to the current round",
     "AddTime.Broadcast.TimeShortened": "shortened the current round by {lime}{0}{white} seconds",
-    "QueryCvar.Notification.Usage": "Usage: !querycvar <target> <cvar>",
+    "QueryCvar.Notification.Usage": "Usage: !qcvar <target> <cvar>",
+    "ReplicateCvar.Notification.Usage": "Usage: !rcvar <target> <cvar> <value>",
+    "ReplicateCvar.Notification.Replicated": "replicated {lime}{0}{white} with value {lime}{1}{white} to {lime}{2}{white}"
 }
