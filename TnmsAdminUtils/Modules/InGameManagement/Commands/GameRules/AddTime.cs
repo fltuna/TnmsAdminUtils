@@ -30,8 +30,8 @@ public class AddTime(IServiceProvider provider) : TnmsAbstractCommandBase(provid
             case PermissionValidator:
                 PrintMessageToServerOrPlayerChat(context.Client, LocalizeWithPluginPrefix(context.Client, "Common.ValidationFailure.NotEnoughPermissions"));
                 break;
-            case RangedArgumentValidator<int>:
-                PrintMessageToServerOrPlayerChat(context.Client, LocalizeWithPluginPrefix(context.Client, "Common.ValidationFailure.ArgumentIsMustBeInRange", 1, context.RangedValidator!.GetRangeDescription()));
+            case IRangedArgumentValidator rangedArgumentValidator:
+                PrintMessageToServerOrPlayerChat(context.Client, LocalizeWithPluginPrefix(context.Client, "Common.ValidationFailure.ArgumentIsMustBeInRange", rangedArgumentValidator.ArgumentIndex, rangedArgumentValidator.GetRangeDescription()));
                 break;
         }
         

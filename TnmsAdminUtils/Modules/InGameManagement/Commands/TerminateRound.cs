@@ -28,8 +28,8 @@ public class TerminateRound(IServiceProvider provider) : TnmsAbstractCommandBase
             case PermissionValidator:
                 PrintMessageToServerOrPlayerChat(context.Client, LocalizeWithPluginPrefix(context.Client, "Common.ValidationFailure.NotEnoughPermissions"));
                 break;
-            case RangedArgumentValidator<float>:
-                PrintMessageToServerOrPlayerChat(context.Client, LocalizeWithPluginPrefix(context.Client, "Common.ValidationFailure.ArgumentIsMustBeInRange", 1, context.RangedValidator!.GetRangeDescription()));
+            case IRangedArgumentValidator rangedArgumentValidator:
+                PrintMessageToServerOrPlayerChat(context.Client, LocalizeWithPluginPrefix(context.Client, "Common.ValidationFailure.ArgumentIsMustBeInRange", rangedArgumentValidator.ArgumentIndex, rangedArgumentValidator.GetRangeDescription()));
                 break;
         }
         

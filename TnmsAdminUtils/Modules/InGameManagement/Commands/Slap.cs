@@ -34,8 +34,8 @@ public class Slap(IServiceProvider provider): TnmsAbstractCommandBase(provider)
             case ExtendableTargetValidator:
                 PrintMessageToServerOrPlayerChat(context.Client, LocalizeWithPluginPrefix(context.Client, "Common.ValidationFailure.NoValidTargetsFound"));
                 break;
-            case RangedArgumentValidator<int>:
-                PrintMessageToServerOrPlayerChat(context.Client, LocalizeWithPluginPrefix(context.Client, "Common.ValidationFailure.ArgumentIsMustBeInRange", 2, context.RangedValidator!.GetRangeDescription()));
+            case IRangedArgumentValidator rangedArgumentValidator:
+                PrintMessageToServerOrPlayerChat(context.Client, LocalizeWithPluginPrefix(context.Client, "Common.ValidationFailure.ArgumentIsMustBeInRange", rangedArgumentValidator.ArgumentIndex, rangedArgumentValidator.GetRangeDescription()));
                 break;
         }
         
