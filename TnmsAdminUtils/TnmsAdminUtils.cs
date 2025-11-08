@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Sharp.Shared;
 using TnmsAdminUtils.Modules.ClientManagement;
 using TnmsAdminUtils.Modules.InGameManagement;
@@ -25,8 +26,7 @@ public class TnmsAdminUtils(
 
     protected override void TnmsOnPluginLoad(bool hotReload)
     {
-        RegisterModule<InGameManagementCommands>();
-        RegisterModule<ServerManagementCommands>();
-        RegisterModule<ClientManagementCommands>();
+        AddTnmsCommandsUnderNamespace("TnmsAdminUtils", true);
+        Logger.LogInformation("TnmsAdminUtils is initialized");
     }
 }
