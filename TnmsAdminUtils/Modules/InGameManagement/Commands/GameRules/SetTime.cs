@@ -43,7 +43,6 @@ public class SetTime(IServiceProvider provider) : TnmsAbstractCommandBase(provid
         // TODO() A bit complicated
         // int setSeconds = validatedArguments!.GetArgument<int>(1);
         //
-        // Plugin.TnmsLogger.LogAdminActionLocalized(client, "SetTime.Broadcast.TimeSet", setSeconds);
         // Console.WriteLine($"SetTime.Broadcast.TimeSet: {setSeconds}");
         //
         // GameRulesUtil.SetRoundTime(setSeconds);

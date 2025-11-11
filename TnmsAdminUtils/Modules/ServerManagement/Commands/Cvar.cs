@@ -2,8 +2,10 @@
 using Sharp.Shared.Objects;
 using Sharp.Shared.Types;
 using TnmsPluginFoundation.Extensions;
+using TnmsPluginFoundation.Extensions.Client;
 using TnmsPluginFoundation.Models.Command;
 using TnmsPluginFoundation.Models.Command.Validators;
+using TnmsPluginFoundation.Utils.Entity;
 
 namespace TnmsAdminUtils.Modules.ServerManagement.Commands;
 
@@ -43,7 +45,7 @@ public class Cvar(IServiceProvider provider): TnmsAbstractCommandBase(provider)
 
         if (commandInfo.ArgCount <= 1)
         {
-            PrintMessageToServerOrPlayerChat(client, LocalizeWithPluginPrefix(client, "Cvar.Notification.CurrentCvarValueAndType", commandInfo.GetArg(1), cvar.Type.ToString(), cvar.GetCvarValueString()));
+            PrintMessageToServerOrPlayerChat(client, LocalizeWithPluginPrefix(client, "Cvar.Notification.CurrentCvarValueAndType", commandInfo.GetArg(1), cvar.GetCvarValueString(), cvar.Type.ToString()));
             return;
         }
         
@@ -60,8 +62,18 @@ public class Cvar(IServiceProvider provider): TnmsAbstractCommandBase(provider)
             cvar.SetString(value);
         }
         
+        string executor = PlayerUtil.GetPlayerName(client);
+        Plugin.TnmsLogger.LogAdminAction(client, $"Admin {executor} changed cvar '{cvar.Name}' to {value}");
         
-        Plugin.TnmsLogger.LogAdminActionLocalized(client, "Cvar.Broadcast.CvarSet", cvar.Name, value);
+        foreach (var gameClient in SharedSystem.GetModSharp().GetIServer().GetGameClients())
+        {
+            if (gameClient.IsFakeClient || gameClient.IsHltv)
+                continue;
+            
+            gameClient.GetPlayerController()?
+                .PrintToChat(
+                    LocalizeWithPluginPrefix(gameClient, "Cvar.Broadcast.CvarSet", executor, cvar.Name, value));
+        }
     }
 
 }

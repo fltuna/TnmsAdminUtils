@@ -1,6 +1,8 @@
-﻿using Sharp.Shared.Enums;
+﻿using System.Globalization;
+using Sharp.Shared.Enums;
 using Sharp.Shared.Objects;
 using Sharp.Shared.Types;
+using TnmsPluginFoundation.Extensions.Client;
 using TnmsPluginFoundation.Models.Command;
 using TnmsPluginFoundation.Models.Command.Validators;
 using TnmsPluginFoundation.Models.Command.Validators.RangedValidators;
@@ -51,8 +53,22 @@ public class TerminateRound(IServiceProvider provider) : TnmsAbstractCommandBase
                 // Ignored
             }
         }
+
+
+        string executor = PlayerUtil.GetPlayerName(client);
+        Plugin.TnmsLogger.LogAdminAction(client, $"Admin {executor} terminated round in {delaySeconds} seconds with reason {reason.ToString()}");
+        
+
+        foreach (var gameClient in SharedSystem.GetModSharp().GetIServer().GetGameClients())
+        {
+            if (gameClient.IsFakeClient || gameClient.IsHltv)
+                continue;
+            
+            gameClient.GetPlayerController()?
+                .PrintToChat(
+                    LocalizeWithPluginPrefix(gameClient, "TerminateRound.Broadcast.RoundTerminated", executor, delaySeconds, reason.ToString()));
+        }
         
         GameRulesUtil.TerminateRound(delaySeconds, reason, true);
-        Plugin.TnmsLogger.LogAdminActionLocalized(client, "TerminateRound.Broadcast.RoundTerminated", delaySeconds, reason.ToString());
     }
 }

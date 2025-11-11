@@ -1,5 +1,7 @@
-﻿using Sharp.Shared.Objects;
+﻿using System.Globalization;
+using Sharp.Shared.Objects;
 using Sharp.Shared.Types;
+using TnmsExtendableTargeting.Shared;
 using TnmsPluginFoundation.Extensions.Client;
 using TnmsPluginFoundation.Models.Command;
 using TnmsPluginFoundation.Models.Command.Validators;
@@ -41,16 +43,16 @@ public class Send(IServiceProvider provider): TnmsAbstractCommandBase(provider)
 
     protected override void ExecuteCommand(IGameClient? client, StringCommand commandInfo, ValidatedArguments? validatedArguments)
     {
-        var targets = validatedArguments!.GetArgument<List<IGameClient>>(1)!;
-        var sendTarget = validatedArguments!.GetArgument<List<IGameClient>>(2)!;
+        var targets = validatedArguments!.GetArgument<ITargetingResult>(1)!;
+        var sendTarget = validatedArguments!.GetArgument<ITargetingResult>(2)!;
 
-        if (sendTarget.Count > 1)
+        if (!sendTarget.IsSingleTarget)
         {
             PrintMessageToServerOrPlayerChat(client, LocalizeWithPluginPrefix(client, "Common.ValidationFailure.MultipleTargetsFound"));
             return;
         }
         
-        var sendTargetPawn = sendTarget[0].GetPlayerController()?.GetPlayerPawn();
+        var sendTargetPawn = sendTarget.GetTargets()[0].GetPlayerController()?.GetPlayerPawn();
 
         if (sendTargetPawn == null)
         {
@@ -58,7 +60,7 @@ public class Send(IServiceProvider provider): TnmsAbstractCommandBase(provider)
             return;
         }
         
-        foreach (var gameClient in targets)
+        foreach (var gameClient in targets.GetTargets())
         {
             var pawn = gameClient.GetPlayerController()?.GetPlayerPawn();
             
@@ -68,16 +70,19 @@ public class Send(IServiceProvider provider): TnmsAbstractCommandBase(provider)
             pawn.Teleport(sendTargetPawn.GetAbsOrigin());
         }
 
-        string targetName;
-        if (targets.Count > 1)
+        string targetName = targets.GetTargetName(CultureInfo.CurrentCulture);
+        string sendTargetName = sendTargetPawn.GetController()?.PlayerName ?? "N/A";
+        string executor = PlayerUtil.GetPlayerName(client);
+        Plugin.TnmsLogger.LogAdminAction(client, $"Admin {executor} sent {targetName} to {sendTargetName}");
+    
+        foreach (var gameClient in SharedSystem.GetModSharp().GetIServer().GetGameClients())
         {
-            targetName = $"{targets.Count} players";
-        }
-        else
-        {
-            targetName = $"{targets[0].Name}";
-        }
+            if (gameClient.IsFakeClient || gameClient.IsHltv)
+                continue;
         
-        Plugin.TnmsLogger.LogAdminActionLocalized(client, "Teleport.Broadcast.Send", targetName, PlayerUtil.GetPlayerName(sendTargetPawn.GetController()?.GetGameClient()));
+            gameClient.GetPlayerController()?
+                .PrintToChat(
+                    LocalizeWithPluginPrefix(gameClient, "Teleport.Broadcast.Send", executor, targets.GetTargetName(Plugin.Localizer.GetClientCulture(gameClient)), sendTargetName));
+        }
     }
 }

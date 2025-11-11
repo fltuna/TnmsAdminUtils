@@ -5,6 +5,7 @@ using TnmsExtendableTargeting.Shared;
 using TnmsPluginFoundation.Extensions.Client;
 using TnmsPluginFoundation.Models.Command;
 using TnmsPluginFoundation.Models.Command.Validators;
+using TnmsPluginFoundation.Utils.Entity;
 
 namespace TnmsAdminUtils.Modules.ClientManagement.Commands;
 
@@ -80,6 +81,8 @@ public class ReplicateCvar(IServiceProvider provider): TnmsAbstractCommandBase(p
                 cvar.Flags &= ~Sharp.Shared.Enums.ConVarFlags.Replicated;
         }
         
-        client.GetPlayerController()?.PrintToChat(LocalizeWithPluginPrefix(client, "ReplicateCvar.Notification.Replicated", cvar.Name, value, targets.GetTargetName()));
+        Plugin.TnmsLogger.LogAdminAction(client, $"Admin {PlayerUtil.GetPlayerName(client)} replicated ConVar to {targets.GetTargetName()} | ConVar: {cvar.Name}, value: {value}");
+        
+        client.GetPlayerController()?.PrintToChat(LocalizeWithPluginPrefix(client, "ReplicateCvar.Notification.Replicated", cvar.Name, value, targets.GetTargetName(Plugin.Localizer.GetClientCulture(client))));
     }
 }

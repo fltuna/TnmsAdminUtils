@@ -1,8 +1,11 @@
-﻿using Sharp.Shared.Objects;
+﻿using System.Globalization;
+using Sharp.Shared.Objects;
 using Sharp.Shared.Types;
+using TnmsExtendableTargeting.Shared;
 using TnmsPluginFoundation.Extensions.Client;
 using TnmsPluginFoundation.Models.Command;
 using TnmsPluginFoundation.Models.Command.Validators;
+using TnmsPluginFoundation.Utils.Entity;
 
 namespace TnmsAdminUtils.Modules.InGameManagement.Commands.Teleports;
 
@@ -43,9 +46,9 @@ public class Bring(IServiceProvider provider): TnmsAbstractCommandBase(provider)
         if (executorPawn == null)
             return;
         
-        var targets = validatedArguments!.GetArgument<List<IGameClient>>(1)!;
+        var targets = validatedArguments!.GetArgument<ITargetingResult>(1)!;
 
-        foreach (var gameClient in targets)
+        foreach (var gameClient in targets.GetTargets())
         {
             var pawn = gameClient.GetPlayerController()?.GetPlayerPawn();
             
@@ -55,16 +58,19 @@ public class Bring(IServiceProvider provider): TnmsAbstractCommandBase(provider)
             pawn.Teleport(executorPawn.GetAbsOrigin());
         }
 
-        string targetName;
-        if (targets.Count > 1)
-        {
-            targetName = $"{targets.Count} players";
-        }
-        else
-        {
-            targetName = $"{targets[0].Name}";
-        }
         
-        Plugin.TnmsLogger.LogAdminActionLocalized(client, "Teleport.Broadcast.Bring", targetName);
+        string executor = PlayerUtil.GetPlayerName(client);
+        string targetName = targets.GetTargetName();
+        Plugin.TnmsLogger.LogAdminAction(client, $"Admin {executor} brought {targetName} to their potision");
+    
+        foreach (var gameClient in SharedSystem.GetModSharp().GetIServer().GetGameClients())
+        {
+            if (gameClient.IsFakeClient || gameClient.IsHltv)
+                continue;
+        
+            gameClient.GetPlayerController()?
+                .PrintToChat(
+                    LocalizeWithPluginPrefix(gameClient, "Teleport.Broadcast.Bring", executor, targets.GetTargetName(Plugin.Localizer.GetClientCulture(gameClient))));
+        }
     }
 }

@@ -1,8 +1,11 @@
-﻿using Sharp.Shared.Objects;
+﻿using System.Globalization;
+using Sharp.Shared.Objects;
 using Sharp.Shared.Types;
+using TnmsExtendableTargeting.Shared;
 using TnmsPluginFoundation.Extensions.Client;
 using TnmsPluginFoundation.Models.Command;
 using TnmsPluginFoundation.Models.Command.Validators;
+using TnmsPluginFoundation.Utils.Entity;
 
 namespace TnmsAdminUtils.Modules.InGameManagement.Commands.Teleports;
 
@@ -43,15 +46,15 @@ public class Goto(IServiceProvider provider): TnmsAbstractCommandBase(provider)
         if (executorPawn == null)
             return;
         
-        var targets = validatedArguments!.GetArgument<List<IGameClient>>(1)!;
+        var targets = validatedArguments!.GetArgument<ITargetingResult>(1)!;
 
-        if (targets.Count > 1)
+        if (!targets.IsSingleTarget)
         {
             PrintMessageToServerOrPlayerChat(client, LocalizeWithPluginPrefix(client, "Common.ValidationFailure.MultipleTargetsFound"));
             return;
         }
         
-        var targetPawn = targets[0].GetPlayerController()?.GetPlayerPawn();
+        var targetPawn = targets.GetTargets().FirstOrDefault()?.GetPlayerController()?.GetPlayerPawn();
         
         if (targetPawn == null)
         {
@@ -61,6 +64,18 @@ public class Goto(IServiceProvider provider): TnmsAbstractCommandBase(provider)
         
         executorPawn.Teleport(targetPawn.GetAbsOrigin());
         
-        Plugin.TnmsLogger.LogAdminActionLocalized(client, "Teleport.Broadcast.Goto", targetPawn.GetController()!.PlayerName);
+        string executor = PlayerUtil.GetPlayerName(client);
+        string targetName = targetPawn.GetController()?.PlayerName ?? "N/A";
+        Plugin.TnmsLogger.LogAdminAction(client, $"Admin {executor} teleported to {targetName}");
+    
+        foreach (var gameClient in SharedSystem.GetModSharp().GetIServer().GetGameClients())
+        {
+            if (gameClient.IsFakeClient || gameClient.IsHltv)
+                continue;
+        
+            gameClient.GetPlayerController()?
+                .PrintToChat(
+                    LocalizeWithPluginPrefix(gameClient, "Teleport.Broadcast.Goto", executor, targetName));
+        }
     }
 }

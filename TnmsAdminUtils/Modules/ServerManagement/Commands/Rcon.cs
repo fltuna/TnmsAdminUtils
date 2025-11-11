@@ -1,7 +1,9 @@
 ﻿using Sharp.Shared.Objects;
 using Sharp.Shared.Types;
+using TnmsPluginFoundation.Extensions.Client;
 using TnmsPluginFoundation.Models.Command;
 using TnmsPluginFoundation.Models.Command.Validators;
+using TnmsPluginFoundation.Utils.Entity;
 
 namespace TnmsAdminUtils.Modules.ServerManagement.Commands;
 
@@ -38,11 +40,17 @@ public class Rcon(IServiceProvider provider): TnmsAbstractCommandBase(provider)
         
         Plugin.SharedSystem.GetModSharp().ServerCommand(commandToExecute);
         
-        // client.GetPlayerController()?.PrintToChat(LocalizeWithPluginPrefix(client, "Rcon.Notification.CommandExecuted", commandToExecute));
-    
-        Plugin.TnmsLogger.LogAdminActionLocalized(client, "Rcon.Broadcast.CommandExecuted", commandToExecute);
-
+        string executor = PlayerUtil.GetPlayerName(client);
+        Plugin.TnmsLogger.LogAdminAction(client, $"Admin {executor} is executed '{commandToExecute}' with RCON");
         
-        
+        foreach (var gameClient in SharedSystem.GetModSharp().GetIServer().GetGameClients())
+        {
+            if (gameClient.IsFakeClient || gameClient.IsHltv)
+                continue;
+            
+            gameClient.GetPlayerController()?
+                .PrintToChat(
+                    LocalizeWithPluginPrefix(gameClient, "Rcon.Broadcast.CommandExecuted", executor, commandToExecute));
+        }
     }
 }

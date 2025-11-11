@@ -1,9 +1,12 @@
-﻿using Sharp.Shared.Objects;
+﻿using System.Globalization;
+using Sharp.Shared.Objects;
 using Sharp.Shared.Types;
+using TnmsExtendableTargeting.Shared;
 using TnmsPluginFoundation.Extensions.Client;
 using TnmsPluginFoundation.Models.Command;
 using TnmsPluginFoundation.Models.Command.Validators;
 using TnmsPluginFoundation.Models.Command.Validators.RangedValidators;
+using TnmsPluginFoundation.Utils.Entity;
 
 namespace TnmsAdminUtils.Modules.InGameManagement.Commands;
 
@@ -44,10 +47,10 @@ public class Slap(IServiceProvider provider): TnmsAbstractCommandBase(provider)
 
     protected override void ExecuteCommand(IGameClient? client, StringCommand commandInfo, ValidatedArguments? validatedArguments)
     {
-        var targets = validatedArguments!.GetArgument<List<IGameClient>>(1)!;
+        var targets = validatedArguments!.GetArgument<ITargetingResult>(1)!;
         int damage = validatedArguments.GetArgument<int>(2);
 
-        foreach (var gameClient in targets)
+        foreach (var gameClient in targets.GetTargets())
         {
             var pawn = gameClient?.GetPlayerController()?.GetPlayerPawn();
             
@@ -77,24 +80,37 @@ public class Slap(IServiceProvider provider): TnmsAbstractCommandBase(provider)
             // TODO Play slap sound, and sound can be specified in config later
         }
 
-        string targetName;
-        if (targets.Count > 1)
-        {
-            targetName = $"{targets.Count} players";
-        }
-        else
-        {
-            targetName = $"{targets[0].Name}";
-        }
+        string executor = PlayerUtil.GetPlayerName(client);
+        string targetName = targets.GetTargetName(CultureInfo.CurrentCulture);
 
+        
         if (damage > 0)
         {
-            Plugin.TnmsLogger.LogAdminActionLocalized(client, "Slap.Broadcast.Slapped.WithDamage", targetName, damage);
+            Plugin.TnmsLogger.LogAdminAction(client, $"Admin {executor} has been slapped {targetName} with damage {damage}");
+            foreach (var gameClient in SharedSystem.GetModSharp().GetIServer().GetGameClients())
+            {
+                if (gameClient.IsFakeClient || gameClient.IsHltv)
+                    continue;
+            
+                gameClient.GetPlayerController()?
+                    .PrintToChat(
+                        LocalizeWithPluginPrefix(gameClient, "Slap.Broadcast.Slapped.WithDamage", executor, targets.GetTargetName(Plugin.Localizer.GetClientCulture(gameClient)), damage)
+                    );
+            }
         }
         else
         {
-            Plugin.TnmsLogger.LogAdminActionLocalized(client, "Slap.Broadcast.Slapped.NoDamage", targetName);
+            Plugin.TnmsLogger.LogAdminAction(client, $"Admin {executor} has been slapped {targetName}");
+            foreach (var gameClient in SharedSystem.GetModSharp().GetIServer().GetGameClients())
+            {
+                if (gameClient.IsFakeClient || gameClient.IsHltv)
+                    continue;
+            
+                gameClient.GetPlayerController()?
+                    .PrintToChat(
+                        LocalizeWithPluginPrefix(gameClient, "Slap.Broadcast.Slapped.NoDamage", executor, targets.GetTargetName(Plugin.Localizer.GetClientCulture(gameClient)))
+                    );
+            }
         }
-        
     }
 }

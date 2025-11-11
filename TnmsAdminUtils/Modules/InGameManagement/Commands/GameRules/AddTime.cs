@@ -1,5 +1,6 @@
 ﻿using Sharp.Shared.Objects;
 using Sharp.Shared.Types;
+using TnmsPluginFoundation.Extensions.Client;
 using TnmsPluginFoundation.Models.Command;
 using TnmsPluginFoundation.Models.Command.Validators;
 using TnmsPluginFoundation.Models.Command.Validators.RangedValidators;
@@ -46,6 +47,8 @@ public class AddTime(IServiceProvider provider) : TnmsAbstractCommandBase(provid
         
         int newRoundTimeLimit = currentRoundTimeLimit + extendSeconds;
         
+        
+        string executor = PlayerUtil.GetPlayerName(client);
 
         if (extendSeconds < 0)
         {
@@ -56,11 +59,31 @@ public class AddTime(IServiceProvider provider) : TnmsAbstractCommandBase(provid
                 newRoundTimeLimit = 0;
             }
             
-            Plugin.TnmsLogger.LogAdminActionLocalized(client, "AddTime.Broadcast.TimeShortened", diffTime);
+            Plugin.TnmsLogger.LogAdminAction(client, $"Admin {executor} shortened current round time by {diffTime} seconds");
+        
+            foreach (var gameClient in SharedSystem.GetModSharp().GetIServer().GetGameClients())
+            {
+                if (gameClient.IsFakeClient || gameClient.IsHltv)
+                    continue;
+            
+                gameClient.GetPlayerController()?
+                    .PrintToChat(
+                        LocalizeWithPluginPrefix(gameClient, "AddTime.Broadcast.TimeShortened", executor, diffTime));
+            }
         }
         else
         {
-            Plugin.TnmsLogger.LogAdminActionLocalized(client, "AddTime.Broadcast.TimeAdded", extendSeconds);
+            Plugin.TnmsLogger.LogAdminAction(client, $"Admin {executor} extended current round time by {extendSeconds} seconds");
+        
+            foreach (var gameClient in SharedSystem.GetModSharp().GetIServer().GetGameClients())
+            {
+                if (gameClient.IsFakeClient || gameClient.IsHltv)
+                    continue;
+            
+                gameClient.GetPlayerController()?
+                    .PrintToChat(
+                        LocalizeWithPluginPrefix(gameClient, "AddTime.Broadcast.TimeAdded", executor, extendSeconds));
+            }
         }
         
         GameRulesUtil.SetRoundTime(newRoundTimeLimit);

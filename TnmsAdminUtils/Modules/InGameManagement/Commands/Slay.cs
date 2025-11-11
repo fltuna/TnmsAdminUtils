@@ -1,8 +1,11 @@
-﻿using Sharp.Shared.Objects;
+﻿using System.Globalization;
+using Sharp.Shared.Objects;
 using Sharp.Shared.Types;
+using TnmsExtendableTargeting.Shared;
 using TnmsPluginFoundation.Extensions.Client;
 using TnmsPluginFoundation.Models.Command;
 using TnmsPluginFoundation.Models.Command.Validators;
+using TnmsPluginFoundation.Utils.Entity;
 
 namespace TnmsAdminUtils.Modules.InGameManagement.Commands;
 
@@ -39,25 +42,29 @@ public class Slay(IServiceProvider provider): TnmsAbstractCommandBase(provider)
 
     protected override void ExecuteCommand(IGameClient? client, StringCommand commandInfo, ValidatedArguments? validatedArguments)
     {
-        var targets = validatedArguments!.GetArgument<List<IGameClient>>(1)!;
+        var targets = validatedArguments!.GetArgument<ITargetingResult>(1)!;
 
-        foreach (var gameClient in targets)
+        foreach (var gameClient in targets.GetTargets())
         {
             gameClient.GetPlayerController()?.GetPlayerPawn()?.Slay();
         }
         
         
 
-        string targetName;
-        if (targets.Count > 1)
+
+        string executor = PlayerUtil.GetPlayerName(client);
+        string targetName = targets.GetTargetName(CultureInfo.CurrentCulture);
+        Plugin.TnmsLogger.LogAdminAction(client, $"Admin {executor} slayed {targetName}");
+
+        foreach (var gameClient in SharedSystem.GetModSharp().GetIServer().GetGameClients())
         {
-            targetName = $"{targets.Count} players";
+            if (gameClient.IsFakeClient || gameClient.IsHltv)
+                continue;
+            
+            gameClient.GetPlayerController()?
+                .PrintToChat(
+                    LocalizeWithPluginPrefix(gameClient, "Slay.Broadcast.Slayed", executor, targets.GetTargetName(Plugin.Localizer.GetClientCulture(gameClient)))
+                );
         }
-        else
-        {
-            targetName = $"{targets[0].Name}";
-        }
-        
-        Plugin.TnmsLogger.LogAdminActionLocalized(client, $"Slay.Broadcast.Slayed", targetName);
     }
 }

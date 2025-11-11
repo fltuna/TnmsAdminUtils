@@ -2,9 +2,11 @@
 using Sharp.Shared.Enums;
 using Sharp.Shared.Objects;
 using Sharp.Shared.Types;
+using TnmsExtendableTargeting.Shared;
 using TnmsPluginFoundation.Extensions.Client;
 using TnmsPluginFoundation.Models.Command;
 using TnmsPluginFoundation.Models.Command.Validators;
+using TnmsPluginFoundation.Utils.Entity;
 
 namespace TnmsAdminUtils.Modules.ClientManagement.Commands;
 
@@ -41,11 +43,11 @@ public class QueryCvar(IServiceProvider provider): TnmsAbstractCommandBase(provi
         if (client == null)
             return;
         
-        var targets = validatedArguments!.GetArgument<List<IGameClient>>(1)!;
+        var targets = validatedArguments!.GetArgument<ITargetingResult>(1)!;
 
-        var results = new QueryCvarResults(targets.Count, SharedSystem);
+        var results = new QueryCvarResults(targets.GetTargets().Count(g => !g.IsFakeClient), SharedSystem);
         
-        foreach (var target in targets)
+        foreach (var target in targets.GetTargets())
         {
             if (target.IsFakeClient || target.IsHltv)
                 continue;
@@ -64,7 +66,7 @@ public class QueryCvar(IServiceProvider provider): TnmsAbstractCommandBase(provi
                 });
         }
         
-        
+        Plugin.TnmsLogger.LogAdminAction(client, $"Admin {PlayerUtil.GetPlayerName(client)} requested query cvar '{commandInfo.GetArg(2)}' for {targets.GetTargetName()}");
         client.GetPlayerController()?.PrintToChat(LocalizeWithPluginPrefix(client, "Common.Notification.SeeConsole"));
     }
 
